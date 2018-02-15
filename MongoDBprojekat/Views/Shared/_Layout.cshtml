@@ -1,0 +1,79 @@
+﻿@{ 
+    var message = "";
+    if (Request.Cookies.Count == 0)
+    {
+        message = "Welcome, guest";
+    }
+    else
+    {
+        message = "Welcome, " + Request.Cookies[0]["username"];
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: transparent;">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a id="ddown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">More</a>
+                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <a class="dropdown-item" href="/">Home</a>
+                        <a class="dropdown-item" href="#features">Features</a>
+                        <a class="dropdown-item" href="#pricing">Pricing</a>
+                        <a class="dropdown-item" href="#about">About</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/Upload">Upload</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link account" href="/Account?login=true">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link account" href="/Account?register=true">Register</a>
+                </li>
+            </ul>
+            <span class="text-white" style="margin: 0px 10px;">@message</span>
+            @{ if (Request.Cookies.Count > 0)
+               {
+                    <a href="/Account/Logout" style="margin: 0px 10px;">Sign out</a>
+               }
+            }
+            <form class="form-inline my-2 my-lg-0" method="get" action="/Upload/SearchUploaded">
+                <input class="form-control mr-sm-2" name="searchID" placeholder="Search ID" type="text">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+    </nav>
+    <div class="">
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="container">
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/app.js")
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
