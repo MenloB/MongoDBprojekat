@@ -22,6 +22,8 @@ namespace MongoDBprojekat.Models
         public string Email { get; set; }
         [BsonElement("password")]
         public string Password { get; set; }
+        [BsonElement("profile_picture")]
+        public string ProfilePicture { get; set; }
         [BsonElement("uploads")]
         public List<UploadedFile> Uploads { get; set; }
 

@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -91,6 +92,49 @@ namespace MongoDBprojekat.Controllers
                 return View(user);
             else
                 return Content("Profile not found.");
+        }
+
+        public void DeleteAccount(string id)
+        {
+            using (var dbContext = new MongoDBContext())
+            {
+                dbContext.ConnectionString = "mongodb://localhost:27017";
+                dbContext.IsSSLEnabled = true;
+                dbContext.DatabaseName = "test";
+
+                dbContext.Connect();
+
+                dbContext.RemoveAccount(id);
+
+                dbContext.Dispose();
+            }
+        }
+
+        public void UpdateProfilePhoto(string id, HttpPostedFileBase profile)
+        {
+            var fileName = "";
+            var fileSavePath = "";
+            var uploadedFile = Request.Files[0];
+            fileName = Path.GetFileName(uploadedFile.FileName);
+            if (Request.Cookies.Count > 0)
+            {
+                /* VEROVATNO SERVER SPRECAVA DA SE KREIRA FOLDER  */
+                //Directory.CreateDirectory("~/UploadedFiles/" + Request.Cookies[0]["username"]);
+                fileSavePath = Server.MapPath("~/UploadedFiles/" + Request.Cookies[0]["username"] + "/ProfilePictures/" + fileName);
+                uploadedFile.SaveAs(fileSavePath);
+            }
+            using (var dbContext = new MongoDBContext())
+            {
+                dbContext.ConnectionString = "mongodb://localhost:27017";
+                dbContext.IsSSLEnabled = true;
+                dbContext.DatabaseName = "test";
+
+                dbContext.Connect();
+
+                dbContext.UpdateProfilePhoto(id, profile.FileName);
+
+                dbContext.Dispose();
+            }
         }
 
         public void Logout()

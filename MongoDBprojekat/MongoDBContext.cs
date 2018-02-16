@@ -99,6 +99,21 @@ namespace MongoDBprojekat
             return null;
         }
 
+        internal void UpdateProfilePhoto(string id, string photoFileName)
+        {
+            if(_database != null)
+            {
+                var collection = _database.GetCollection<User>("users");
+                var filter = Builders<User>.Filter.Eq(x => x.Id, ObjectId.Parse(id));
+                var update = Builders<User>.Update.Set(p => p.ProfilePicture, photoFileName);
+                collection.FindOneAndUpdateAsync<User>(filter, update);
+            }
+            else
+            {
+                return;
+            }
+        }
+
         internal void UpdateUserUploads(UploadedFile uploadedFile, string Username)
         {
             var collection = _database.GetCollection<UploadedFile>("uploads");
@@ -164,6 +179,21 @@ namespace MongoDBprojekat
             else
             {
                 return new UploadedFile();
+            }
+        }
+
+        internal void RemoveAccount(string id)
+        {
+            if(_database != null)
+            {
+                var collection = _database.GetCollection<User>("users");
+                var filter = Builders<User>.Filter.Eq(x => x.Id, ObjectId.Parse(id));
+                collection.FindOneAndDeleteAsync(filter);
+            }
+
+            else
+            {
+                return;
             }
         }
     }

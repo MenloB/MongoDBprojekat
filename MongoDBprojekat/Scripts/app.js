@@ -17,6 +17,9 @@
         }, 500, "swing");
     }
 
+    $('.text').on('click', function () {
+        console.log('nesto');
+    });
 
     $('#signup').on('click', function () {
         console.log("signup");
@@ -106,9 +109,6 @@
 
         event.preventDefault();
     });
-
-    //form processing - register
-    
 });
 
 function copyLink(arg) {
@@ -120,4 +120,21 @@ function copyLink(arg) {
     object.select();
     document.execCommand("Copy");
     alert("Link copied to your clipboard.");
+}
+
+function deleteAccount() {
+    var accountData = {
+        'id' : $('input[name="user-id"]').val()
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/Account/DeleteAccount',
+        data: accountData,
+        dataType: 'json'
+    }).done(function (data) {
+        console.log(data);
+    }).error(function () {
+        console.log("cannot delete account.");
+    });
 }
