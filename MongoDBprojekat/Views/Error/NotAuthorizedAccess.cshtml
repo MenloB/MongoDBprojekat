@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "NotAuthorizedAccess";
+    Layout = "~/Views/Shared/_Blank.cshtml";
+
+    string link = ViewBag.Message.Substring(0, ViewBag.Message.Length - 4);
+    string linkmp4 = link + ".mp4";
+    string linkgif = link + ".gif";
+}
+
+
+<div class="container flex-column" style="margin-top: 55px;">
+    <div class="flex-row text-center">
+        <h2>Not Authorized Access</h2>
+        <ul class="flex-row" style="list-style: none;">
+            <li>
+                <a href="/" class="btn btn-outline-primary">Home</a>
+                <a href="/Account?register=true" class="btn btn-outline-secondary">Register</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div style="width:800px;height:0;position:relative; margin: 0 auto;">
+        <video src="@linkmp4" autoplay="" loop="" muted="" playsinline="" onerror="this.onerror=()=>{};this.src='@ViewBag.Message';">
+            <img src="@linkgif" alt="">
+        </video>
+    </div>
+</div>

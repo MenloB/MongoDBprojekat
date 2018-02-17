@@ -46,11 +46,14 @@
                     <a class="nav-link account" href="/Account?register=true">Register</a>
                 </li>
             </ul>
+
             <span class="text-white" style="margin: 0px 10px;">@message</span>
+
             @{ if (Request.Cookies.Count > 0)
-               {
-                    <a href="/Account/Logout" style="margin: 0px 10px;">Sign out</a>
-               }
+        {
+            <a href="/Account/Profile?_id=5a874a2a26e68e20f0e2a354" class="btn btn-outline-secondary">Go To Profile</a>
+            <a href="/Account/Logout" style="margin: 0px 10px;" class="btn btn-outline-danger">Sign out</a>
+}
             }
             <form class="form-inline my-2 my-lg-0" method="get" action="/Upload/SearchUploaded">
                 <input class="form-control mr-sm-2" name="searchID" placeholder="Search ID" type="text">

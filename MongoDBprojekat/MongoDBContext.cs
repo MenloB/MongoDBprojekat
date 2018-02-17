@@ -203,6 +203,20 @@ namespace MongoDBprojekat
                 return;
             }
         }
+        
+        internal string GetGIFUrl(int id)
+        {
+            string url = "";
+            if(_database != null)
+            {
+                var collection = _database.GetCollection<Gif>("gifs");
+                var filter = Builders<Gif>.Filter.Eq(x => x.Id, id.ToString());
+
+                url = collection.Find(filter).ToList().First().Url;
+            }
+
+            return url;
+        }
     }
 }
 

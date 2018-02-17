@@ -109,6 +109,9 @@
 
         event.preventDefault();
     });
+
+    $('video').addClass('video');
+
 });
 
 function copyLink(arg) {
