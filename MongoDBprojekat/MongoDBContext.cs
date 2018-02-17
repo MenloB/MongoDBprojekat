@@ -163,7 +163,14 @@ namespace MongoDBprojekat
             collection.DeleteOneAsync(filter);
 
             var userCollection = _database.GetCollection<User>("users");
-            
+            var userFilter = Builders<User>.Filter;
+            var userFilterAndUpload = userFilter.And(
+                Builders<User>.Filter.Eq(x => x.Id, ObjectId.Parse(userId)),
+                Builders<User>.Filter.ElemMatch(x => x.Uploads, y => y.Id == ObjectId.Parse(fileId)));
+
+            var updateUser = Builders<User>.Filter.ElemMatch(x => x.Uploads, y => y.Id == ObjectId.Parse(fileId));
+
+            var test = userCollection.FindOneAndUpdateAsync(updateUser, null);
         }
 
         internal UploadedFile SearchUploadedFile(string searchID)

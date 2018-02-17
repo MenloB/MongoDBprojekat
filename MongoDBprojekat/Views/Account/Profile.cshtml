@@ -8,18 +8,18 @@
 
     if(Model.ProfilePicture != null)
     {
-        profilePictureSrc = Server.MapPath("~/UploadedFiles/" + Request.Cookies[0]["username"] + "/ProfilePictures/" + Model.ProfilePicture);
+        profilePictureSrc = "~/UploadedFiles/" + Request.Cookies[0]["username"] + "/ProfilePictures/" + Model.ProfilePicture;
     }
     else
     {
-        profilePictureSrc = Server.MapPath("~/UploadedFiles/" + Request.Cookies[0]["username"] + "/ProfilePictures/user.png");
+        profilePictureSrc = "~/UploadedFiles/zeroday/ProfilePictures/user.png";
     }
 }
 <div class="container">
     <div class="row flex-column" style="margin-top: 100px;">
         <div class="row flex-row">
             <div class="darken">
-                <img src="@profilePictureSrc" alt="Avatar" class="image" style="width:100%">
+                <img src="~/UploadedFiles/zeroday/ProfilePictures/user.png" alt="Avatar" class="image" style="width:100%">
                 <div class="middle">
                     <div data-target="#profilePhoto" data-toggle="modal" class="text">Change Profile Picture</div>
                 </div>
