@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDBprojekat.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,26 +73,37 @@ namespace MongoDBprojekat.Controllers
 
         public new ActionResult Profile(string _id)
         {
-            Models.User user = new Models.User();
-            using (var context = new MongoDBContext())
+            if(Request.Cookies.Count <= 0)
             {
-                context.ConnectionString = "mongodb://localhost:27017";
-                context.IsSSLEnabled = true;
-                context.DatabaseName = "test";
-
-                context.Connect();
-
-
-                var id = ObjectId.Parse(_id);
-                user = context.GetUserById(id);
-
-                context.Dispose();
+                Response.Redirect("/Error/NotAuthorizedAccess");
+                return null;
             }
-
-            if (user.Username != null)
-                return View(user);
             else
-                return Content("Profile not found.");
+            {
+                Models.User user = new Models.User();
+                using (var context = new MongoDBContext())
+                {
+                    context.ConnectionString = "mongodb://localhost:27017";
+                    context.IsSSLEnabled = true;
+                    context.DatabaseName = "test";
+
+                    context.Connect();
+
+
+                    var id = ObjectId.Parse(_id);
+                    user = context.GetUserById(id);
+
+                    context.Dispose();
+
+                    if (user.Username != null)
+                        return View(user);
+                    else
+                        return Content("Profile not found.");
+                }
+            }
+            
+
+            
         }
 
         public void DeleteAccount(string id)
@@ -143,6 +155,81 @@ namespace MongoDBprojekat.Controllers
             Response.Cookies["upload_services"].Expires = DateTime.Now.AddDays(-1d);
 
             Response.Redirect("/");
+        }
+
+        public ActionResult UpdateAccount(string id)
+        {
+            User u = new User();
+
+            using (var dbContext = new MongoDBContext())
+            {
+                dbContext.ConnectionString = "mongodb://localhost:27017";
+                dbContext.DatabaseName = "test";
+                dbContext.IsSSLEnabled = true;
+
+                dbContext.Connect();
+
+                u = dbContext.GetUserById(ObjectId.Parse(id));
+
+                dbContext.Dispose();
+            }
+
+            return View(u);
+        }
+
+        public void Update(string id, string firstname, string lastname, string username, string email, string password, string confpassword)
+        {
+            if (password == confpassword) {
+                if (password != null)
+                {
+                    using (var dbContext = new MongoDBContext())
+                    {
+                        dbContext.ConnectionString = "mongodb://localhost:27017";
+                        dbContext.DatabaseName = "test";
+                        dbContext.IsSSLEnabled = true;
+
+                        dbContext.Connect();
+
+                        dbContext.UpdateUserDetails(id, firstname, lastname, username, email, password);
+
+                        dbContext.Dispose();
+
+                        Logout();
+                        Login(username, password);
+
+                        Response.Redirect("/Account/Profile?_id=" + id);
+                    }
+                }
+                else
+                {
+                    using (var dbContext = new MongoDBContext())
+                    {
+                        dbContext.ConnectionString = "mongodb://localhost:27017";
+                        dbContext.DatabaseName = "test";
+                        dbContext.IsSSLEnabled = true;
+
+                        dbContext.Connect();
+
+                        dbContext.UpdateUserDetails(id, firstname, lastname, username, email);
+
+                        dbContext.Dispose();
+
+                        Logout();
+
+                        HttpCookie cookie = new HttpCookie("upload_services");
+                        cookie["username"] = username;
+                        cookie["firstname"] = firstname;
+                        cookie["lastname"] = lastname;
+                        cookie.Expires = DateTime.Now.AddDays(1d);
+                        Response.Cookies.Add(cookie);
+
+                        Response.Redirect("/Account/Profile?_id=" + id);
+                    }
+                }
+            } else
+            {
+                return;
+            }
         }
     }
 }

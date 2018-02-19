@@ -223,6 +223,7 @@
     <Content Include="Views\Account\_RegisterForm.cshtml" />
     <Content Include="Views\Account\_LoginForm.cshtml" />
     <Content Include="Views\Error\NotAuthorizedAccess.cshtml" />
+    <Content Include="Views\Account\UpdateAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DLLs\" />

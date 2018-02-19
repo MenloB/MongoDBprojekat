@@ -2,13 +2,13 @@
 
     var loc = window.location.href;
     console.log(loc);
-    if (loc == "http://localhost:60764/Account?register=true") {
+    if (loc === "http://localhost:60764/Account?register=true") {
         console.log("?register=true");
         $('#register-form').toggleClass('show-form');
         $('#login').animate({
             right: "-1000px"
         }, 500, "swing");
-    } else if (loc == "http://localhost:60764/Account?login=true") {
+    } else if (loc === "http://localhost:60764/Account?login=true") {
         $('#register-form').css({
             marginLeft: '-500px'
         });
@@ -141,3 +141,20 @@ function deleteAccount() {
         console.log("cannot delete account.");
     });
 }
+
+//function updateAccount() {
+//    var accountData = {
+//        'id': $('input[name="user-id"]').val()
+//    };
+
+//    $.ajax({
+//        type: 'POST',
+//        url: '/Account/UpdateAccount',
+//        data: accountData,
+//        dataType: 'json'
+//    }).done(function (data) {
+//        console.log(data);
+//    }).error(function () {
+//        console.log("cannot update account.");
+//    });
+//}

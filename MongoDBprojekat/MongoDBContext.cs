@@ -173,6 +173,32 @@ namespace MongoDBprojekat
             var test = userCollection.FindOneAndUpdateAsync(updateUser, null);
         }
 
+        internal void UpdateUserDetails(string id, string firstname, string lastname, string username, string email, string password)
+        {
+            var userCollection = _database.GetCollection<User>("users");
+            var userFilter = Builders<User>.Filter.Eq(x => x.Id, ObjectId.Parse(id));
+            var updateUser = Builders<User>.Update.Set(x => x.FirstName, firstname).
+                Set(x=> x.LastName, lastname).
+                Set(x => x.Username, username).
+                Set(x=> x.Email, email).
+                Set(x=> x.Password, password);
+
+
+            userCollection.UpdateOneAsync(userFilter, updateUser);
+        }
+
+        internal void UpdateUserDetails(string id, string firstname, string lastname, string username, string email)
+        {
+            var userCollection = _database.GetCollection<User>("users");
+            var userFilter = Builders<User>.Filter.Eq(x => x.Id, ObjectId.Parse(id));
+            var updateUser = Builders<User>.Update.Set(x => x.FirstName, firstname).
+                Set(x => x.LastName, lastname).
+                Set(x => x.Username, username).
+                Set(x => x.Email, email);
+
+            userCollection.UpdateOneAsync(userFilter, updateUser);
+        }
+
         internal UploadedFile SearchUploadedFile(string searchID)
         {
             if(_database != null)
